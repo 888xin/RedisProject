@@ -73,8 +73,17 @@ public class TestRedis2 {
 
     @Test
     public void testgetMulti(){
-        Collection collection = loginAccountService.getMulti(new HashSet<Object>());
-        System.out.println(collection.size());
+        Collection<Object> list = new ArrayList<Object>();
+        list.add(1L);
+        list.add(9L);
+        list.add(2222222L);
+        list.add(4L);
+        list.add(7L);
+        list.add(333333L);
+        Collection collection = loginAccountService.getMulti(list);
+        for (Object o : collection) {
+            System.out.println(o);
+        }
     }
 
     @Test
@@ -107,5 +116,54 @@ public class TestRedis2 {
         long currentTime = new Date().getTime();
         long time = currentTime - random ;
         System.out.println(time);
+    }
+
+    @Test
+    public void testTime2(){
+        int i = 1000 * 60 * 60 * 24 * 7 ;
+        System.out.println(i);
+    }
+
+    @Test
+    public void testInsert3(){
+        loginAccountService.put5(1L);
+        loginAccountService.put5(2L);
+        loginAccountService.put5(3L);
+        loginAccountService.put5(4L);
+        loginAccountService.put5(5L);
+        loginAccountService.put5(6L);
+        loginAccountService.put5(7L);
+        loginAccountService.put5(8L);
+        loginAccountService.put5(9L);
+
+    }
+
+    @Test
+    public void testdelete2(){
+        loginAccountService.put5(1L);
+        loginAccountService.delete(2L);
+        loginAccountService.put5(3L);
+        loginAccountService.delete(4L);
+        loginAccountService.put5(5L);
+        loginAccountService.delete(6L);
+        loginAccountService.delete(7L);
+        loginAccountService.put5(8L);
+        loginAccountService.put5(9L);
+
+    }
+
+    @Test
+    public void testgetLoginStatusMap3(){
+        Collection<Object> list = new ArrayList<Object>();
+        list.add(1L);
+        list.add(9L);
+        list.add(2222222L);
+        list.add(4L);
+        list.add(7L);
+        list.add(333333L);
+        Map<Long, Boolean> map = loginAccountService.getLoginStatusMap3(list, 60*20);
+        for (Long aLong : map.keySet()) {
+            System.out.println(aLong + ":" + map.get(aLong));
+        }
     }
 }
