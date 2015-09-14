@@ -1,6 +1,5 @@
 package com.lhx.service;
 
-import com.lhx.domain.User;
 import com.lhx.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

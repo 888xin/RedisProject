@@ -11,8 +11,9 @@
     <!-- 引入jdbc配置文件 -->
     <context:property-placeholder location="classpath:applicationContext-redis.properties"/>
 
-    <!-- 扫描文件（自动将dao层注入） -->
+    <!-- 扫描文件 -->
     <context:component-scan base-package="com.lhx.service"/>
+    <context:component-scan base-package="com.lhx.activity"/>
 
     <!-- Jedis 连接池配置-->
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
@@ -30,6 +31,8 @@
     </bean>
      <!--redisTemplate配置，redisTemplate是对Jedis的对redis操作的扩展，有更多的操作，封装使操作更便捷 -->
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" p:connectionFactory-ref="jedisConnectionFactory" />
+
+    <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate" p:connectionFactory-ref="jedisConnectionFactory" />
 
     <!--<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">-->
         <!--<property name="connectionFactory" value="jedisConnectionFactory"></property>-->
