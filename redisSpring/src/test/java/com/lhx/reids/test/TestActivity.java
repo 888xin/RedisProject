@@ -7,6 +7,10 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by lhx on 15-9-10 下午4:24
  *
@@ -132,6 +136,41 @@ public class TestActivity {
         for (short i : s) {
             System.out.print(i + " ");
         }
+    }
+
+    @Test
+    public void testgetMulti(){
+        List<Object> n = midautumnActivityService.getMulti(14L);
+        System.out.println(n);
+    }
+
+    @Test
+    public void test4(){
+        boolean l = midautumnActivityService.increment(14L, 0, 1L);
+        System.out.println(l);
+    }
+
+    @Test
+    public void test5(){
+        Object n = midautumnActivityService.getOne(12L, 0);
+        System.out.println(n);
+    }
+
+    @Test
+    public void test6(){
+        Collection<Object> n = midautumnActivityService.getOne2(12L);
+        System.out.println(n);
+    }
+
+    @Test
+    public void testaddCharacter(){
+        midautumnActivityService.addCharacter(3L,3,1);
+    }
+
+    @Test
+    public void testgetIndex(){
+        Map<Integer, Integer> map = midautumnActivityService.getIndex(3L);
+        System.out.println(map);
     }
 
 }
