@@ -7,9 +7,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by lhx on 15-9-10 下午4:24
@@ -173,4 +171,238 @@ public class TestActivity {
         System.out.println(map);
     }
 
+    @Test
+    public void test7(){
+        System.out.println(60*60*24*115);
+        System.out.println(60*60*24*7);
+        System.out.println(Integer.MAX_VALUE);
+    }
+
+    @Test
+    public void test8(){
+        long date = new Date().getTime();
+        System.out.println(date);
+        long time = date / 10000 ;
+        System.out.println(time);
+
+        double timeDouble =  time % 1000_0000L ;
+        System.out.println(timeDouble);
+
+        long l1= 1460614252605L ;
+        Calendar calendar = Calendar.getInstance();
+        System.out.println(System.currentTimeMillis());
+    }
+
+    @Test
+    public void test9(){
+        String result="";
+        for(int i=0;i<6;i++){
+            int intVal=(int)(Math.random()*26+97);
+            result=result+(char)intVal;
+        }
+        System.out.println(result);
+    }
+
+    @Test
+    public void test10(){
+        String result = "";
+        for (int i = 0; i < 6; i++) {
+//            int intVal = (int) (Math.random() * 26 + 97);
+            int intVal = (int) (Math.random() * 10);
+            result += intVal;
+        }
+        System.out.println(result);
+    }
+
+    @Test
+    public void test11(){
+
+        Map<Integer, Integer> map =  backGold(90);
+        for (Integer integer : map.keySet()) {
+            System.out.println(integer + ":" + map.get(integer));
+        }
+
+    }
+
+    private Map<Integer, Integer> backGold(double back){
+        Map<Integer, Integer> ret = new HashMap<>();
+        if (back > 100) { // 超过100的部分全部以100返回
+            int num = (int) (back / 100);
+            ret.put(100, num);
+            back = back % 100;
+        }
+        if (back > 95) { // 大于95按照100取整
+            Integer num = ret.get(100);
+            if (num == null) {
+                num = 0;
+            }
+            ret.put(100, num + 1);
+        } else {
+            if (back >= 50) { // 大于50 获取50元卷
+                ret.put(50, 1);
+                back = back % 50;
+            }
+            if (back >= 20) { // 大于20 获取20元卷
+                int num = (int) (back / 20);
+                ret.put(20, num);
+                back = back % 20;
+            }
+            if (back >= 10) {// 大于10 获取10元卷
+                ret.put(10, 1);
+                back = back % 10;
+
+            }
+            if (back > 5) {// 大于5获取10元卷
+                Integer num = ret.get(10);
+                if (num == null) {
+                    num = 0;
+                }
+                ret.put(10, num + 1);
+            } else if (back > 0){
+                ret.put(5, 1);
+            }
+        }
+        return ret;
+
+    }
+
+    @Test
+    public void test12(){
+
+        int backGold = 90 ;
+        if (backGold > 0) {
+            // 派奖
+            if (backGold % 60 == 0){
+                int num = (backGold / 60)*3 ;
+                System.out.println(backGold);
+                System.out.println(num);
+            } else if (backGold % 30 == 0){
+                int num = (backGold / 30)*3 ;
+                System.out.println(backGold);
+                System.out.println(num);
+            } else if (backGold % 15 == 0){
+                int num = (backGold / 15)*3 ;
+                System.out.println(backGold);
+                System.out.println(num);
+            } else {
+                System.out.println("");
+            }
+        }
+    }
+
+    @Test
+    public void test13(){
+
+        Integer num = 2 ;
+        num = (num == null) ? 1 : num ;
+        System.out.println(num);
+    }
+
+    @Test
+    public void test14(){
+
+        Date now = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(now);
+        calendar.add(Calendar.HOUR_OF_DAY, 4);
+        for (int i = 0; i < 10; i++) {
+            calendar.add(Calendar.SECOND, 5);
+            System.out.println(calendar.getTime());
+        }
+
+    }
+
+    @Test
+    public void test15(){
+
+        Random random = new Random();
+        for (int i = 0; i < 20; i++) {
+            int n = random.nextInt(500);
+            System.out.println(n);
+        }
+
+
+    }
+
+    @Test
+    public void test16(){
+
+        Integer n = null ;
+        System.out.println(9 == n);
+
+
+    }
+
+    @Test
+    public void test17(){
+
+        String f = "%0" + 5 + "d";
+        System.out.println(f);
+        System.out.println( String.format(f, 2014));
+
+
+    }
+
+    @Test
+    public void test18(){
+
+        Calendar calendar = Calendar.getInstance();
+        String year = String.valueOf(calendar.get(Calendar.YEAR)).substring(2, 4);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+
+        System.out.println(year);
+        System.out.println(month);
+        System.out.println(day);
+
+        String key = year + String.format("%02d",month) +String.format("%02d",day);
+
+        System.out.println(key);
+
+
+    }
+
+    @Test
+    public void test19() throws InterruptedException {
+//        long date = new Date().getTime();
+//        System.out.println(date);
+//        long time = date / 1000 ;
+//        System.out.println(time);
+//
+//        double timeDouble =  time % 1000_0000L ;
+//        System.out.println(timeDouble);
+//
+//        long l1= 1460614252605L ;
+//        Calendar calendar = Calendar.getInstance();
+
+        for (int i = 0; i < 10; i++) {
+            System.out.println(System.currentTimeMillis() / 1000);
+            Thread.sleep(1000);
+        }
+
+    }
+
+    @Test
+    public void test20() throws InterruptedException {
+
+        Long l = 100L ;
+        Integer n = 23 ;
+        String key = String.format(this.getClass().getName() + ":%d:%d:",l,n);
+        System.out.println(key);
+
+    }
+
+    @Test
+    public void test21(){
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH,1);
+        calendar.set(Calendar.HOUR,0);
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.SECOND,0);
+        System.out.println(calendar.getTimeInMillis());
+
+
+    }
 }
