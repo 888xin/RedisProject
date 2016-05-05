@@ -351,7 +351,6 @@ public class TestActivity {
         int month = calendar.get(Calendar.MONTH) + 1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-
         System.out.println(year);
         System.out.println(month);
         System.out.println(day);
