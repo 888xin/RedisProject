@@ -2,11 +2,19 @@ package com.lhx.reids.test;
 
 import com.lhx.activity.MidautumnActivity;
 import com.lhx.service.MidautumnActivityService;
+import com.lhx.util.QiniuFileUtil;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -403,5 +411,57 @@ public class TestActivity {
         System.out.println(calendar.getTimeInMillis());
 
 
+    }
+
+    @Test
+    public void test22() throws IOException {
+        URL[] urls = new URL[]{
+                new URL("http://www.sinaimg.cn/dy/slidenews/2_img/2016_19/786_1784238_614326.jpg"),
+                new URL("http://www.sinaimg.cn/dy/slidenews/2_img/2016_19/786_1784239_432598.jpg"),
+        };
+        URL url = new URL("http://www.sinaimg.cn/dy/slidenews/2_img/2016_19/786_1784238_614326.jpg");
+        //java.io.File[] files = FileUtils.toFiles(urls);
+        java.io.File files2 = FileUtils.toFile(url);
+
+        File f = new File("E:\\01.jpg");
+
+        //FileUtils.copyFile(files2, f);
+        File file = FileUtils.toFile(url);
+        FileUtils.copyURLToFile(url,f);
+        System.out.println(file);
+
+
+    }
+
+    @Test
+    public void test23() throws IOException {
+
+
+        InputStream in = new URL("http://www.sinaimg.cn/dy/slidenews/2_img/2016_19/786_1784238_614326.jpg").openStream();
+        byte [] gif = IOUtils.toByteArray(in);
+        //IOUtils.write(gif,new FileOutputStream(new File("c:/test.gif")));
+        FileUtils.writeByteArrayToFile(new File("c:/test.gif"),gif);
+        IOUtils.closeQuietly(in);
+
+
+
+
+    }
+
+    @Test
+    public void test24() throws IOException {
+
+        InputStream in = new URL("http://www.sinaimg.cn/dy/slidenews/2_img/2016_19/786_1784238_614326.jpg").openStream();
+        byte[] jpg = IOUtils.toByteArray(in);
+        QiniuFileUtil qiniuFileUtil = QiniuFileUtil.getInstance();
+        qiniuFileUtil.uploadPhotoByBytes("test1.jpg",jpg);
+
+    }
+
+    @Test
+    public void test25() throws IOException {
+        String images = "sdfsfgsdfg.jpg,";
+        images = images.substring(0,images.length()-1);
+        System.out.println(images);
     }
 }
