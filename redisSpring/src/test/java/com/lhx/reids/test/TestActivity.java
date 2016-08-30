@@ -193,7 +193,7 @@ public class TestActivity {
         long time = date / 10000 ;
         System.out.println(time);
 
-        double timeDouble =  time % 1000_0000L ;
+        double timeDouble =  time % 10000000L ;
         System.out.println(timeDouble);
 
         long l1= 1460614252605L ;
@@ -233,7 +233,7 @@ public class TestActivity {
     }
 
     private Map<Integer, Integer> backGold(double back){
-        Map<Integer, Integer> ret = new HashMap<>();
+        Map<Integer, Integer> ret = new HashMap<Integer, Integer>();
         if (back > 100) { // 超过100的部分全部以100返回
             int num = (int) (back / 100);
             ret.put(100, num);
