@@ -6,6 +6,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.StringRedisConnection;
 import org.springframework.data.redis.core.*;
 
 import java.io.IOException;
@@ -797,6 +800,7 @@ public class TestFrontPageService {
         String[] images = {"sdds","sdfsdf","erwerew"};
 
         System.out.println(images.toString());
+        System.out.println(new SimpleDateFormat("yyMMdd").format(new Date()));
 
     }
 
@@ -821,7 +825,220 @@ public class TestFrontPageService {
 
     }
 
+    @Test
+    public void test41(){
 
+        List<Object> list = new ArrayList<>();
+        list.add("sd");
+        list.add("sd2");
+        list.add("sd3");
+        List<Object> result = stringRedisTemplate.opsForHash().multiGet("13", list);
+        for (Object o : result) {
+            System.out.println(o);
+        }
+
+    }
+
+    @Test
+    public void test42(){
+
+//        stringRedisTemplate.opsForZSet().add("test_name", "apple",3d);
+//        stringRedisTemplate.opsForZSet().add("test_name", "apple2",6d);
+//        stringRedisTemplate.opsForZSet().add("test_name", "apple3",1d);
+//        stringRedisTemplate.opsForZSet().add("test_name", "apple4",9d);
+        stringRedisTemplate.opsForSet().add("test_name3", "apple");
+
+        Set<String> seta = new HashSet<>();
+        seta.add("apple");
+        seta.add("lis");
+        seta.add("xin");
+        Set<String> set = stringRedisTemplate.opsForSet().intersect("test_name3",seta);
+        for (String s : set) {
+            System.out.println(s);
+        }
+
+    }
+
+    @Test
+    public void test43() {
+
+//        stringRedisTemplate.opsForZSet().add("test_name", "apple", 3d);
+//        stringRedisTemplate.opsForZSet().add("test_name", "apple2", 6d);
+//        stringRedisTemplate.opsForZSet().add("test_name", "apple3", 1d);
+//        stringRedisTemplate.opsForZSet().add("test_name", "apple4", 9d);
+
+
+//        Double d = stringRedisTemplate.opsForZSet().score("test_name","apple234");
+
+
+                //pop a specified number of items from a queue
+                List<Object> results = stringRedisTemplate.executePipelined(
+                new RedisCallback<Object>() {
+                    public Object doInRedis(RedisConnection connection) throws DataAccessException {
+                        StringRedisConnection stringRedisConn = (StringRedisConnection) connection;
+                        Set<String> seta = new HashSet<>();
+                        seta.add("apple");
+                        seta.add("lis");
+                        seta.add("xin");
+                        for (String s : seta) {
+                            Double d = stringRedisConn.zScore("test_name", s);
+                            System.out.println(d);
+                        }
+                        return null ;
+                    }
+                });
+
+
+    }
+
+    @Test
+    public void test44() {
+
+        stringRedisTemplate.opsForZSet().add("xin7", "apple", 3d);
+        stringRedisTemplate.opsForZSet().add("xin7", "apple2", 6d);
+        stringRedisTemplate.opsForZSet().add("xin7", "apple3", 1d);
+        stringRedisTemplate.opsForZSet().add("xin7", "apple4", 9d);
+
+
+
+        List<String> list = Arrays.asList("apple","apple4","apple7","apple9");
+        List<Object> doubles = multiGetByScore("test_name", list);
+        for (Object aDouble : doubles) {
+            if (aDouble == null){
+                System.out.println(0);
+            } else {
+                System.out.println(Double.valueOf(aDouble.toString()));
+            }
+        }
+
+
+
+    }
+
+    public List<Object> multiGetByScore(final String key, final List<String> keys) {
+        List<Object> results = stringRedisTemplate.executePipelined(
+                new RedisCallback<Object>() {
+                    public Object doInRedis(RedisConnection connection) throws DataAccessException {
+                        StringRedisConnection stringRedisConn = (StringRedisConnection) connection;
+                        for (String s : keys) {
+                            stringRedisConn.zScore(key, s);
+                        }
+                        return null;
+                    }
+                });
+        return results;
+    }
+
+
+    @Test
+    public void test45(){
+
+//        stringRedisTemplate.opsForZSet().add("lhx", "apple",3d);
+//        stringRedisTemplate.opsForZSet().add("lhx", "apple2",6d);
+//        stringRedisTemplate.opsForZSet().add("lhx", "apple3",1d);
+//        stringRedisTemplate.opsForZSet().add("lhx", "apple4",9d);
+//
+//        stringRedisTemplate.opsForZSet().add("lhx2", "apple4",9d);
+//        stringRedisTemplate.opsForZSet().add("lhx2", "apple1",19d);
+//        stringRedisTemplate.opsForZSet().add("lhx2", "apple5",92d);
+//        stringRedisTemplate.opsForZSet().add("lhx2", "apple8",39d);
+//        stringRedisTemplate.opsForZSet().add("lhx2", "apple2",49d);
+//
+//
+//        Long result = stringRedisTemplate.opsForZSet().unionAndStore("lhx","lhx2","lhx3");
+//        System.out.println(result);
+//        Set<String> set = stringRedisTemplate.opsForZSet().rangeByScore("lhx3",Double.MIN_VALUE, Double.MAX_VALUE);
+//        for (String s : set) {
+//            System.out.println(s);
+//        }
+//        System.out.println("===========================");
+        Set<ZSetOperations.TypedTuple<String>> set1 = stringRedisTemplate.opsForZSet().rangeByScoreWithScores("lhx3",Double.MIN_VALUE, Double.MAX_VALUE);
+        Set<ZSetOperations.TypedTuple<String>> set2 = stringRedisTemplate.opsForZSet().rangeByScoreWithScores("lhx3",Double.MIN_VALUE, Double.MAX_VALUE, 2,2);
+
+        for (ZSetOperations.TypedTuple<String> stringTypedTuple : set1) {
+            System.out.println(stringTypedTuple.getValue() + ":" + stringTypedTuple.getScore());
+        }
+
+        System.out.println("===========================");
+
+        for (ZSetOperations.TypedTuple<String> stringTypedTuple : set2) {
+            System.out.println(stringTypedTuple.getValue() + ":" + stringTypedTuple.getScore());
+        }
+    }
+
+
+    @Test
+    public void test46(){
+
+        Object o = "1.0";
+        //System.out.println(Integer.valueOf(o.toString()));
+        System.out.println( Double.valueOf(o.toString()).intValue());
+
+    }
+
+    @Test
+    public void test47(){
+
+        String day = null;
+        System.out.println( "30".equals(day));
+
+    }
+
+    @Test
+    public void test48() {
+
+        Double d = stringRedisTemplate.opsForZSet().incrementScore("xin7", "pp", 3d);
+        System.out.println(d);
+
+        Double dd = stringRedisTemplate.opsForZSet().score("xin7", "pp1");
+        System.out.println(dd);
+
+    }
+
+    @Test
+    public void test49() {
+
+        List<String> list = new ArrayList<>();
+        list.add("234234");
+        list.add("234678678234");
+        list.add("235465464234");
+        list.add("2343452234===");
+        String s = list.remove(list.size()-1);
+        System.out.println(s);
+
+    }
+
+    @Test
+    public void test50() {
+
+        String owner = "324324_dsfsdf_234234";
+        int lastIndex = owner.lastIndexOf("_");
+        System.out.println(lastIndex);
+        String userIdStr = owner.substring(lastIndex+1, owner.length());
+        System.out.println(userIdStr);
+
+    }
+
+    @Test
+    public void test51() {
+
+        double d1 = 3.999999999999999999D ;
+        double d2 = 2.000000001D;
+        System.out.println(Math.round(d1));
+        System.out.println(Math.round(d2));
+
+    }
+
+    @Test
+    public void test52() {
+
+        int n = 3;
+        n = n++;
+        System.out.println(n);
+        n = ++n;
+        System.out.println(n);
+
+    }
 
 
 }
